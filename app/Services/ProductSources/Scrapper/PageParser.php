@@ -23,7 +23,7 @@ class PageParser implements PageParserInterface
     public function parse(string $html): array
     {
         $domDocument = (new DOMDocument());
-        $domDocument->loadHTML('<?xml encoding="utf-8">' . $html);
+        $domDocument->loadHTML('<?xml encoding="utf-8">' . $html, LIBXML_NOERROR);
 
         $xpath = new DOMXPath($domDocument);
 
