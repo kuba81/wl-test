@@ -14,7 +14,8 @@
         "laravel-zero/framework": "^9.2",
         "moneyphp/money": "^3.3",
         "nunomaduro/termwind": "^1.14",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "ext-intl": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.2",

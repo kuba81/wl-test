@@ -38,14 +38,14 @@ class ProductServiceTest extends TestCase
             '£1000 per year',
             '£780 per year (charged monthly)',
             '£600 per year'
-        ], $products->pluck('title')->all());
+        ], $products->pluck('option')->all());
     }
 
     private function generateProduct(string $title, Money $price, BillingFrequency $frequency): Product
     {
         $product = new Product();
 
-        $product->title = $title;
+        $product->option = $title;
         $product->price = $price;
         $product->frequency = $frequency;
 

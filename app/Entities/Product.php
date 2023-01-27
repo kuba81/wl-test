@@ -22,4 +22,13 @@ class Product
             return $this->price->multiply(12);
         }
     }
+
+    public function getPricePerMonth(): Money
+    {
+        if ($this->frequency === BillingFrequency::Monthly) {
+            return $this->price;
+        } else {
+            return $this->price->divide(12);
+        }
+    }
 }
