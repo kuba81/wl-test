@@ -1,0 +1,43 @@
+{
+    "name": "kuba/wl-test",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Kuba Stawiarski",
+            "email": "kuba.stawiarski@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel-zero/framework": "^9.2",
+        "nunomaduro/termwind": "^1.14"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.2",
+        "mockery/mockery": "^1.4.4",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "bin": ["wl-test"]
+}
