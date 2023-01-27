@@ -6,6 +6,7 @@ use App\Entities\BillingFrequency;
 use App\Entities\Product;
 use App\Services\Contracts\ItemParserInterface;
 use App\Services\Exceptions\ParseException;
+use App\Util\MoneyHelper;
 use DOMDocument;
 use DOMXPath;
 
@@ -64,8 +65,9 @@ class ItemParser implements ItemParserInterface
             $this->throwParseError();
         }
 
-        $this->product->price = $matches['price'];
-        $this->product->discount = $matches['discount'] ?? null;
+        $this->product->price = MoneyHelper::parseIntl($matches['price']);
+        $this->product->discount = !empty($matches['discount'])
+            ? MoneyHelper::parseIntl($matches['discount']) : null;
 
         $this->product->frequency = match ($matches['frequency']) {
             'Month' => BillingFrequency::Monthly,

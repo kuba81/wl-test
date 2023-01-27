@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services;
 
 use App\Services\ItemParser;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 
 class ItemParserTest extends TestCase
@@ -42,9 +43,10 @@ class ItemParserTest extends TestCase
         $this->assertEquals('My annual test package name', $product->title);
         $this->assertEquals('My annual test package description.', $product->description);
 
-        $this->assertEquals('£66.00', $product->price);
-        $this->assertEquals('£5.86', $product->discount);
+        $this->assertEquals(Money::GBP(6600), $product->price);
+        $this->assertEquals(Money::GBP(586), $product->discount);
     }
+
     public function testShouldCorrectlyExtractDataFromMontlySubscription(): void
     {
         $html = <<<HTML
@@ -78,7 +80,7 @@ class ItemParserTest extends TestCase
         $this->assertEquals('My monthly test package name', $product->title);
         $this->assertEquals('My monthly test package description.', $product->description);
 
-        $this->assertEquals('£16.00', $product->price);
+        $this->assertEquals(Money::GBP(1600), $product->price);
         $this->assertNull($product->discount);
     }
 }
