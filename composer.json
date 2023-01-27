@@ -16,7 +16,11 @@
         "nunomaduro/termwind": "^1.14",
         "ext-dom": "*",
         "ext-intl": "*",
-        "ext-libxml": "*"
+        "ext-libxml": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-tokenizer": "*",
+        "ext-xml": "*"
     },
     "require-dev": {
         "laravel/pint": "^1.2",
