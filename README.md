@@ -1,40 +1,57 @@
-<a href="https://supportukrainenow.org/"><img src="https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct.svg" width="100%"></a>
+# WL coding test implementation
 
-------
+## Requirements
+This project requires PHP 8.2 with the following extensions:
+- php-intl
+- php-mbstring
+- php-json
+- php-tokenizer
+- php-xml
 
-<p align="center">
-    <img title="Laravel Zero" height="100" src="https://raw.githubusercontent.com/laravel-zero/docs/master/images/logo/laravel-zero-readme.png" />
-</p>
+You will also need composer2 installed on your system.
 
-<p align="center">
-  <a href="https://github.com/laravel-zero/framework/actions"><img src="https://img.shields.io/github/workflow/status/laravel-zero/framework/Tests.svg" alt="Build Status"></img></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/dt/laravel-zero/framework.svg" alt="Total Downloads"></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/v/laravel-zero/framework.svg?label=stable" alt="Latest Stable Version"></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/l/laravel-zero/framework.svg" alt="License"></a>
-</p>
+## Setup
+To set up the project, run `composer install` from the root directory.
 
-<h4> <center>This is a <bold>community project</bold> and not an official Laravel one </center></h4>
+## Running
+To execute the fetch command, run `php wl-test fetch-products`
 
-Laravel Zero was created by [Nuno Maduro](https://github.com/nunomaduro) and [Owen Voke](https://github.com/owenvoke), and is a micro-framework that provides an elegant starting point for your console application. It is an **unofficial** and customized version of Laravel optimized for building command-line applications.
+## Testing
+Tests can be run with `./vendor/bin/phpunit`. If you want to see the test descriptions,
+run `./vendor/bin/phpunit --testdox`.
 
-- Built on top of the [Laravel](https://laravel.com) components.
-- Optional installation of Laravel [Eloquent](https://laravel-zero.com/docs/database/), Laravel [Logging](https://laravel-zero.com/docs/logging/) and many others.
-- Supports interactive [menus](https://laravel-zero.com/docs/build-interactive-menus/) and [desktop notifications](https://laravel-zero.com/docs/send-desktop-notifications/) on Linux, Windows & MacOS.
-- Ships with a [Scheduler](https://laravel-zero.com/docs/task-scheduling/) and  a [Standalone Compiler](https://laravel-zero.com/docs/build-a-standalone-application/).
-- Integration with [Collision](https://github.com/nunomaduro/collision) - Beautiful error reporting
+## Implementation details
+I chose [Laravel-Zero](https://laravel-zero.com/) as the framework and used a fairly standard directory structure.
 
-------
+I have added tests and the coverage is 93% (only the exception logic around HTML-parsing errors is untested).
 
-## Documentation
+### Comments
+Although the command works as expected, the implementation is very brittle as it relies on poorly formatted
+HTML code that can change at any time, and this will not be caught by any of the tests as none of them make
+real HTTP requests. The acceptance test for the command uses a snapshot of the HTML code, but it will need to be manually updated
+if the HTML structure is changed at source.
 
-For full documentation, visit [laravel-zero.com](https://laravel-zero.com/).
+I had to make some assumptions as the specification is not clear, particularly around the handling of monthly
+subscriptions. The requirements say that all products should be listed and that they should be ordered by the
+annual price with the discount included, but those properties are not available on monthly subscriptions, so I made
+the following changes/assumptions:
+- The `price` property will always represent the billing amount. I have included `billingFrequency` as well to indicate
+  whether the plan is billed monthly or annually.
+- I have added `pricePerMonth` and `pricePerAnnum` to reflect the real cost of the subscription. For annual plans
+  `pricePerAnnum` will be equal to `price`, and `pricePerMonth` will be the annual price divided by 12. For monthly
+  subscriptions `pricePerAnnum` will be equal to `price` multiplied by 12, while `pricePerMonth`
+  will be equal to `price`.
+- Sorting was done on the `pricePerAnnum` property.
+- All prices will be represented using the money pattern, i.e. they will be objects with two fields:
+  `amount` (represents the value in the currency’s minor unit) and `currency` (the currency ISO symbol).
+  For example, £12.99 will be represented as `{amount: "1299", currency: "GBP"}`. All price fields will
+  have a corresponding `*Formatted` (e.g. `discountFormatted`) which will contain a localised,
+  human-readable representation of the monetary value, e.g. `£12.99`.
 
-## Support the development
-**Do you like this project? Support it by donating**
+I have kept the commits relatively small and atomic, and some commit messages will contain extra details regarding
+implementation etc.
 
-- PayPal: [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L)
-- Patreon: [Donate](https://www.patreon.com/nunomaduro)
-
-## License
-
-Laravel Zero is an open-source software licensed under the MIT license.
+Finally, I have taken some shortcuts I would never do in a real application. For example, for simplicity and speed
+I declared all properties in Product as public and I have not added any logic to ensure that those properties
+are even initialised, which would likely become an issue if the application started to grow. I have also left
+some TODOs in code, I was going to address them but decided not to do it in the interest of time.
