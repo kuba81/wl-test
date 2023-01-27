@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Contracts;
+namespace App\Services\ProductSources\Scrapper\Contracts;
 
 use App\Entities\Product;
-use App\Services\Exceptions\ParseException;
+use App\Services\ProductSources\Scrapper\Exceptions\ParseException;
 
 interface ItemParserInterface
 {

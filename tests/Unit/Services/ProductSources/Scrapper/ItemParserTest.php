@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\ProductSources\Scrapper;
 
-use App\Services\ItemParser;
+use App\Services\ProductSources\Scrapper\ItemParser;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 

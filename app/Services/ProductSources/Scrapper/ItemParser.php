@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ProductSources\Scrapper;
 
 use App\Entities\BillingFrequency;
 use App\Entities\Product;
-use App\Services\Contracts\ItemParserInterface;
-use App\Services\Exceptions\ParseException;
+use App\Services\ProductSources\Scrapper\Contracts\ItemParserInterface;
+use App\Services\ProductSources\Scrapper\Exceptions\ParseException;
 use App\Util\MoneyHelper;
 use DOMDocument;
 use DOMXPath;

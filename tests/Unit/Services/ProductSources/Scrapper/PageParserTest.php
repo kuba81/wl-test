@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\ProductSources\Scrapper;
 
 use App\Entities\Product;
-use App\Services\Contracts\ItemParserInterface;
-use App\Services\PageParser;
+use App\Services\ProductSources\Scrapper\Contracts\ItemParserInterface;
+use App\Services\ProductSources\Scrapper\PageParser;
 use PHPUnit\Framework\TestCase;
 use Tests\GeneratesProductHtml;
 

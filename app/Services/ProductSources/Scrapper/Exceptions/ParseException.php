@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Exceptions;
+namespace App\Services\ProductSources\Scrapper\Exceptions;
 
 use RuntimeException;
 
